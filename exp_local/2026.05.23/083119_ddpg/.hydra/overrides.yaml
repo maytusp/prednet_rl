@@ -1,0 +1,17 @@
+- agent=ddpg
+- domain=humanoid
+- task_sequence=[humanoid_run]
+- num_exposures=1
+- num_train_frames=2000000
+- seed=1
+- device=cuda
+- obs_type=states
+- frame_stack=3
+- action_repeat=1
+- use_wandb=true
+- wandb_mode=online
+- wandb_project=prednet_rl
+- wandb_entity=maytusp
+- wandb_group=
+- save_eval_video=false
+- experiment=nonstationary_hard3_humanoid_run_ddpg

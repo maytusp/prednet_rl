@@ -1,0 +1,22 @@
+Script directory: /mnt/iusers01/fatpou01/compsci01/n70579mp/scratch/prednet_rl
+/var/spool/slurmd/job15373486/slurm_script: line 13: activate: No such file or directory
+workspace: /net/scratch/n70579mp/prednet_rl/full_train
+[2026-05-23 08:32:36,667][absl][INFO] - Explicit task sequence: ['humanoid_run']
+[2026-05-23 08:32:36,875][absl][INFO] - task: humanoid_run
+[2026-05-23 08:32:36,875][absl][INFO] - agent config: {'_target_': 'agent.sf_simple.SFSimpleAgent', 'name': 'sf_simple', 'reward_free': '${reward_free}', 'obs_type': 'states', 'obs_shape': [67], 'action_shape': [21], 'device': '${device}', 'lr': 0.0001, 'lr_task': 1e-05, 'critic_target_tau': 0.01, 'update_every_steps': 2, 'use_tb': '${use_tb}', 'use_wandb': '${use_wandb}', 'num_expl_steps': 4000, 'hidden_dim': 1024, 'feature_dim': 128, 'stddev_schedule': 0.2, 'stddev_clip': 0.3, 'sf_dim': 64, 'update_task_every_step': 10, 'nstep': 3, 'batch_size': 256, 'init_critic': True, 'num_init_steps': 4096, 'update_encoder': '${update_encoder}', 'consolidation': False, 'normalize_basis_features': True, 'normalize_task_params': True}
+[2026-05-23 08:32:37,163][absl][INFO] - num of parameters: 1697045
+[2026-05-23 08:32:37,163][absl][INFO] - agent: SFSimpleAgent
+[2026-05-23 08:32:37,164][absl][INFO] - replay_dir: /net/scratch/n70579mp/prednet_rl/full_train/buffer/41e93ec2ea47427cb0ec5c5a2644c8b8
+[2026-05-23 08:32:37,170][absl][INFO] - {'agent__target_': 'agent.sf_simple.SFSimpleAgent', 'agent_name': 'sf_simple', 'agent_reward_free': False, 'agent_obs_type': 'states', 'agent_obs_shape': [67], 'agent_action_shape': [21], 'agent_device': 'cuda', 'agent_lr': 0.0001, 'agent_lr_task': 1e-05, 'agent_critic_target_tau': 0.01, 'agent_update_every_steps': 2, 'agent_use_tb': False, 'agent_use_wandb': True, 'agent_num_expl_steps': 4000, 'agent_hidden_dim': 1024, 'agent_feature_dim': 128, 'agent_stddev_schedule': 0.2, 'agent_stddev_clip': 0.3, 'agent_sf_dim': 64, 'agent_update_task_every_step': 10, 'agent_nstep': 3, 'agent_batch_size': 256, 'agent_init_critic': True, 'agent_num_init_steps': 4096, 'agent_update_encoder': True, 'agent_consolidation': False, 'agent_normalize_basis_features': True, 'agent_normalize_task_params': True, 'reward_free': False, 'domain': 'humanoid', 'task_sequence': ['humanoid_run'], 'obs_type': 'states', 'frame_stack': 3, 'action_repeat': 1, 'discount': 0.99, 'num_train_frames': 2000000, 'num_seed_frames': 4000, 'eval_every_frames': 10000, 'num_eval_episodes': 10, 'save_snapshot_after_each_task': False, 'snapshot_dir': './full_train/models/states/humanoid/sf_simple/1', 'snapshot_base_dir': './full_train/models/', 'reset_buffer_every_task': False, 'replay_buffer_size': 1000000, 'replay_buffer_num_workers': 2, 'batch_size': 256, 'nstep': 3, 'update_encoder': True, 'seed': 1, 'device': 'cuda', 'save_eval_video': False, 'save_train_video': False, 'use_tb': False, 'use_wandb': True, 'wandb_project': 'prednet_rl', 'wandb_entity': 'maytusp', 'wandb_group': '', 'wandb_name': None, 'wandb_mode': 'online', 'experiment': 'nonstationary_hard3_humanoid_run_sf_simple', 'num_exposures': 1, 'log_freq': 10, 'terminate_after_first_task': False, 'same_reward_for_all_tasks': False, 'diff_dynamics_for_all_tasks': False, 'diff_run_speed_for_all_tasks': False, 'diff_domains_same_reward': False, 'walk_run_tasks': False, 'stand_run_tasks': False, 'run_jump_tasks': False, 'single_task_run_fast': False, 'single_task_run_backward': False, 'env_type': 'dm_control', 'wandb_dir': './wandb', 'mode': 'full_train'}
+
+[2026-05-23 08:32:37,170][absl][INFO] - wandb_dir: /net/scratch/n70579mp/prednet_rl/wandb
+wandb: WARNING `start_method` is deprecated and will be removed in a future version of wandb. This setting is currently non-functional and safely ignored.
+wandb: Currently logged in as: maytusp to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run vknutbh6
+wandb: Tracking run with wandb version 0.23.1
+wandb: Run data is saved locally in /net/scratch/n70579mp/prednet_rl/wandb/wandb/run-20260523_083237-vknutbh6
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run nonstationary_hard3_humanoid_run_sf_simple_sf_simple_humanoid_states_1
+wandb: ⭐️ View project at https://wandb.ai/maytusp/prednet_rl
+wandb: 🚀 View run at https://wandb.ai/maytusp/prednet_rl/runs/vknutbh6
+| eval           | F: 0 | S: 0 | E: 0 | L: 1000 | R: 0.7579 | TASK: 0 | T: 0:00:02
