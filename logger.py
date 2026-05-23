@@ -7,7 +7,6 @@ import torch
 import torchvision
 import wandb
 from termcolor import colored
-from torch.utils.tensorboard import SummaryWriter
 
 COMMON_TRAIN_FORMAT = [('frame', 'F', 'int'), ('step', 'S', 'int'),
                        ('episode', 'E', 'int'), ('episode_length', 'L', 'int'),
@@ -159,6 +158,7 @@ class Logger(object):
             raise ValueError(f"Unknown env_type: {env_type}")
 
         if use_tb:
+            from torch.utils.tensorboard import SummaryWriter
             self._sw = SummaryWriter(str(log_dir / 'tb'))
         else:
             self._sw = None

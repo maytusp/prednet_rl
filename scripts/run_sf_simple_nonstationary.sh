@@ -5,11 +5,17 @@
 #SBATCH -n 1                 # One Slurm task
 #SBATCH -c 12                # CPU cores available to the host code.
 
+set -euo pipefail
+
 cd ..
 SCRIPT_DIR="$(pwd)"
 echo "Script directory: ${SCRIPT_DIR}"
 
-source activate habitat
+CONDA_ENV="${CONDA_ENV:-simple_sfs}"
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate "${CONDA_ENV}"
+
+export MUJOCO_GL="${MUJOCO_GL:-egl}"
 
 TASKS="${TASKS:-humanoid_run quadruped_jump hopper_flip}"
 SEEDS="${SEEDS:-1}"
