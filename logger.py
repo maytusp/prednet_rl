@@ -120,8 +120,8 @@ class MetersGroup(object):
             pieces.append(self._format(disp_key, value, ty))
         print(' | '.join(pieces))
 
-    def _dump_to_wandb(self, data):
-        wandb.log(data)
+    def _dump_to_wandb(self, data, step):
+        wandb.log(data, step=step)
 
     def dump(self, step, prefix):
         if len(self._meters) == 0:
@@ -130,7 +130,7 @@ class MetersGroup(object):
         data['frame'] = step
         if self.use_wandb:
             wandb_data = {prefix + '/' + key: val for key, val in data.items()}
-            self._dump_to_wandb(data=wandb_data)
+            self._dump_to_wandb(data=wandb_data, step=step)
         # self._dump_to_csv(data)
         self._dump_to_console(data, prefix)
         self._meters.clear()

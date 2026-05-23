@@ -21,7 +21,13 @@ import uuid
 from logger import Logger
 from replay_buffer import ReplayBufferStorage, make_replay_loader
 
-from video import TrainVideoRecorder, VideoRecorder
+try:
+    from video import TrainVideoRecorder, VideoRecorder
+except ModuleNotFoundError as exc:
+    if exc.name != "video":
+        raise
+    TrainVideoRecorder = None
+    VideoRecorder = None
 from collections import OrderedDict
 
 torch.backends.cudnn.benchmark = True
@@ -47,6 +53,10 @@ def make_agent(obs_type, obs_spec, action_spec, num_expl_steps, cfg):
     return hydra.utils.instantiate(cfg)
 
 
+def optional_cfg(value):
+    return None if value is None or value == "" else value
+
+
 class Workspace:
     def __init__(self, cfg):
         # set the work_dir to the current working directory
@@ -69,7 +79,14 @@ class Workspace:
 
         # create envs
 
-        if self.cfg.single_task_run_fast:
+        if self.cfg.task_sequence is not None:
+            if isinstance(self.cfg.task_sequence, str):
+                self.tasks = [self.cfg.task_sequence]
+            else:
+                self.tasks = list(self.cfg.task_sequence)
+            logging.info("Explicit task sequence: %s", self.tasks)
+
+        elif self.cfg.single_task_run_fast:
             logging.info("Single task run fast")
             self.tasks = [PRIMAL_TASKS_FAST_RUN[self.cfg.domain]]
             self.cfg.terminate_after_first_task = True
@@ -243,6 +260,11 @@ class Workspace:
 
         # create logger
         if cfg.use_wandb:
+            wandb_dir = Path(cfg.wandb_dir).expanduser()
+            if not wandb_dir.is_absolute():
+                wandb_dir = Path.cwd() / wandb_dir
+            wandb_dir.mkdir(exist_ok=True, parents=True)
+
             exp_name = "_".join(
                 [
                     cfg.experiment,
@@ -253,26 +275,26 @@ class Workspace:
                 ]
             )
 
-            # get current working directory and add wandb_dir
-            wandb_dir_absolute = Path.cwd()
+            wandb_name = optional_cfg(cfg.wandb_name) or exp_name
+            wandb_group = optional_cfg(cfg.wandb_group) or cfg.agent.name
+            project_name = (
+                optional_cfg(cfg.wandb_project)
+                if optional_cfg(cfg.wandb_project) is not None
+                else "continual_rl" + self.cfg.domain + "_" + self.cfg.mode
+            )
+            logging.info("wandb_dir: %s", wandb_dir.as_posix())
 
-            # convert wandb_dir_absolute to string
-            wandb_dir_str = wandb_dir_absolute.as_posix()
-
-            # log wandb_dir_str
-            logging.info("wandb_dir_str: %s", wandb_dir_str)
-
-            project_name = "continual_rl" + self.cfg.domain + "_" + self.cfg.mode
             wandb.init(
                 project=project_name,
-                group=cfg.agent.name,
-                name=exp_name,
+                entity=optional_cfg(cfg.wandb_entity),
+                group=wandb_group,
+                name=wandb_name,
                 config=self._cfg_flatten,
-                dir=wandb_dir_str,
-                mode="offline",
+                dir=wandb_dir.as_posix(),
+                mode=cfg.wandb_mode,
                 settings=wandb.Settings(
                     start_method="thread"
-                ),  # required for offline mode
+                ),
             )
 
         else:
@@ -507,7 +529,10 @@ def main(cfg):
     from full_train import Workspace as W
 
     workspace = W(cfg)
-    workspace.train()
+    try:
+        workspace.train()
+    finally:
+        wandb.finish()
 
 
 if __name__ == "__main__":

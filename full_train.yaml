@@ -7,6 +7,7 @@ defaults:
 reward_free: false
 # task settings
 domain: walker # primal task will be infered in runtime
+task_sequence: null # optional explicit list, e.g. [humanoid_run]
 obs_type: states # [states, pixels]
 frame_stack: 3 # only works if obs_type=pixels
 action_repeat: 1 # set to 2 for pixels
@@ -36,7 +37,12 @@ device: cpu
 save_eval_video: true
 save_train_video: false
 use_tb: false
-use_wandb: false
+use_wandb: true
+wandb_project: prednet_rl
+wandb_entity: maytusp
+wandb_group: null
+wandb_name: null
+wandb_mode: online # [online, offline, disabled]
 # experiment
 experiment: exp
 num_exposures: 2
